@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoidBerry SMP | Official Server</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Silkscreen&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- CSS VARIABLES --- */
+    :root {
+      --bg-dark: #050508;
+      --void-purple: #4a00e0;
+      --berry-pink: #ff0055;
+      --mc-green: #22c55e;
+      --mc-green-glow: rgba(34, 197, 94, 0.4);
+      --danger-red: #ef4444;
+      --discord-blue: #5865F2;
+      --card-bg: rgba(20, 20, 30, 0.6);
+      --card-hover: rgba(30, 30, 45, 0.8);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* --- ANIMATED BACKGROUND --- */
+    .bg-effects {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: radial-gradient(circle at 50% 0%, #1c0a3b 0%, var(--bg-dark) 60%);
+      z-index: -1;
+    }
+
+    /* --- LAYOUT --- */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    section {
+      padding: 50px 0;
+    }
+
+    /* --- HERO SECTION --- */
+    .hero {
+      width: 100%;
+      padding: 60px 20px 40px;
+      position: relative;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 350px;
+      background: url('banner.jpg') center/cover no-repeat;
+      opacity: 0.2;
+      mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+      z-index: -1;
+    }
+
+    .logo {
+      width: 140px;
+      height: 140px;
+      border-radius: 24px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 30px rgba(74, 0, 224, 0.4);
+      animation: float 4s ease-in-out infinite;
+      object-fit: cover;
+      background: #111;
+      margin: 0 auto;
+      display: block;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    h1 {
+      font-family: 'Silkscreen', cursive;
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, var(--berry-pink), #ff758c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-top: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0px 4px 20px rgba(255, 0, 85, 0.3);
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-top: 5px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      padding: 8px 16px;
+      border-radius: 50px;
+      margin: 20px 0 30px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--mc-green);
+    }
+
+    .pulse {
+      width: 10px;
+      height: 10px;
+      background-color: var(--mc-green);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--mc-green-glow);
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* --- DISCORD BUTTON --- */
+    .discord-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: var(--discord-blue);
+      color: white;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 40px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
+    }
+
+    .discord-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(88, 101, 242, 0.6);
+      background: #4752c4;
+    }
+
+    .discord-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+
+    /* --- SECTION HEADERS --- */
+    .section-title {
+      font-family: 'Silkscreen', cursive;
+      color: white;
+      font-size: 1.6rem;
+      margin-bottom: 25px;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.1), transparent);
+      margin-left: 15px;
+    }
+
+    /* --- CARDS & GRIDS --- */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      width: 100%;
+    }
+    
+    @media (max-width: 700px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 24px;
+      transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      background: var(--card-hover);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    }
+
+    /* --- IPs --- */
+    .ip-card { 
+      text-align: center; 
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .ip-card h3 { font-size: 1.3rem; margin-bottom: 10px; color: white; }
+    .ip-card .ip-text {
+      color: var(--text-main);
+      font-family: monospace;
+      font-size: 1.1rem;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .copy-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--void-purple), #6b21a8);
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 15px rgba(74, 0, 224, 0.3);
+    }
+    .copy-btn:hover { filter: brightness(1.2); transform: translateY(-2px); }
+    .copy-btn:active { transform: translateY(0); }
+    .copy-btn.copied { background: var(--mc-green); color: black; box-shadow: 0 4px 15px var(--mc-green-glow); }
+
+    /* --- SPECS SECTION --- */
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+    }
+    .spec-item {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.05);
+      padding: 15px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      transition: background 0.2s;
+    }
+    .spec-item:hover {
+      background: rgba(255,255,255,0.05);
+    }
+    .spec-item strong { color: white; }
+    .spec-icon { font-size: 1.5rem; }
+
+    /* --- RULES SECTION --- */
+    .rule-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .rule-item {
+      background: rgba(255,255,255,0.03);
+      padding: 15px 20px;
+      border-radius: 12px;
+      border-left: 3px solid var(--berry-pink);
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+      transition: transform 0.2s;
+    }
+    .rule-item:hover {
+      transform: translateX(5px);
+      background: rgba(255,255,255,0.05);
+    }
+    .rule-num {
+      background: rgba(255,0,85,0.1);
+      color: var(--berry-pink);
+      font-weight: bold;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    /* --- STRICT RULE ALERT --- */
+    .alert-box {
+      background: rgba(239, 68, 68, 0.05);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-left: 5px solid var(--danger-red);
+      padding: 25px;
+      border-radius: 16px;
+      margin-top: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    .alert-box::before {
+      content: '⚠️';
+      position: absolute;
+      right: -20px; top: -20px;
+      font-size: 100px;
+      opacity: 0.05;
+    }
+    .alert-title {
+      color: var(--danger-red);
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .alert-box p { color: #fca5a5; font-size: 0.95rem; margin-bottom: 10px; }
+    .alert-box p:last-child { margin-bottom: 0; }
+
+    /* --- FOOTER --- */
+    .footer {
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      margin-top: 40px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-effects"></div>
+
+  <div class="container">
+    
+    <header class="hero">
+      <img src="logo.png" alt="VoidBerry SMP Logo" class="logo" onerror="this.src='https://via.placeholder.com/140/1a1a2e/ff0055?text=VB'">
+      <h1>VoidBerry SMP</h1>
+      <p class="subtitle">Survive • Build • Explore • Together</p>
+      
+      <div class="status">
+        <div class="pulse"></div>
+        24/7 Server Online • Crossplay Enabled
+      </div>
+
+      <a href="https://discord.gg/PaYBF4ddgx" target="_blank" class="discord-btn">
+        <svg viewBox="0 0 127.14 96.36">
+          <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1,105.25,105.25,0,0,0,32.19-16.14c2.64-27.38-4.51-51.11-19.32-72.15ZM42.56,65.36c-5.36,0-9.8-4.83-9.8-10.74s4.36-10.74,9.8-10.74,9.85,4.83,9.8,10.74C52.36,60.53,48,65.36,42.56,65.36Zm42,0c-5.36,0-9.8-4.83-9.8-10.74s4.36-10.74,9.8-10.74,9.85,4.83,9.8,10.74C94.41,60.53,90,65.36,84.56,65.36Z"/>
+        </svg>
+        Join our Discord
+      </a>
+
+      <div class="grid-2">
+        <div class="card ip-card">
+          <h3>☕ Java Edition</h3>
+          <div class="ip-text">cross-movies.gl.joinmc.link</div>
+          <button class="copy-btn" onclick="copySpecificText('cross-movies.gl.joinmc.link', this)">Copy Java IP</button>
+        </div>
+
+        <div class="card ip-card">
+          <h3>📱 Bedrock Edition</h3>
+          <div class="ip-text">away-transcript.gl.at.ply.gg<br><span style="color:#94a3b8; font-size:0.9rem;">Port: 20037</span></div>
+          <div class="btn-group">
+            <button class="copy-btn" onclick="copySpecificText('away-transcript.gl.at.ply.gg', this)">Copy IP</button>
+            <button class="copy-btn" onclick="copySpecificText('20037', this)">Copy Port</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section id="info">
+      <h2 class="section-title">⚡ Server Specs & Info</h2>
+      <div class="card">
+        <div class="spec-grid">
+          <div class="spec-item"><span class="spec-icon">🌍</span> <span><strong>Crossplay:</strong> Java + Bedrock Support</span></div>
+          <div class="spec-item"><span class="spec-icon">🚀</span> <span><strong>Performance:</strong> High-performance PaperMC</span></div>
+          <div class="spec-item"><span class="spec-icon">🧠</span> <span><strong>Memory:</strong> 6GB Dedicated RAM</span></div>
+          <div class="spec-item"><span class="spec-icon">⚡</span> <span><strong>TPS:</strong> Optimized for stable 20 TPS</span></div>
+          <div class="spec-item"><span class="spec-icon">💾</span> <span><strong>Storage:</strong> SSD storage for fast loading</span></div>
+          <div class="spec-item"><span class="spec-icon">🔄</span> <span><strong>Safety:</strong> Auto-backups & monitoring</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="rules">
+      <h2 class="section-title">📜 Server Rules</h2>
+      
+      <div class="rule-list">
+        <div class="rule-item">
+          <div class="rule-num">1</div>
+          <div>No hacking, cheating, or using unfair mods/clients.</div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-num">2</div>
+          <div>No griefing or destroying other players' builds.</div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-num">3</div>
+          <div>Do not steal from other players.</div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-num">4</div>
+          <div>Keep the gameplay friendly and respectful.</div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-num">5</div>
+          <div>Avoid lag machines or anything that harms server performance.</div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-num">6</div>
+          <div>Respect staff decisions.</div>
+        </div>
+      </div>
+
+      <p style="color: var(--text-muted); margin-top: 15px; font-size: 0.9rem; text-align: center;">
+        ⚠️ Breaking rules can result in kicks, bans, or resets. Play fair and enjoy the Homies SMP!
+      </p>
+
+      <div class="alert-box">
+        <div class="alert-title">🚫 STRICT TOWN PROTECTION RULE</div>
+        <p><strong>Griefing towns is strictly prohibited.</strong> This includes damaging or destroying player houses, killing villagers, and griefing public trading halls within town areas.</p>
+        <p>Towns are designated safe zones. Any violation of this rule will result in <strong>immediate punishment without warning</strong>, including possible bans.</p>
+        <p style="color: white; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(239,68,68,0.2);">
+          <em>Note: Outside of towns, you are free to do PvP, raid bases, fight, and kill. However, inside towns, zero tolerance will be enforced.</em>
+        </p>
+      </div>
+
+    </section>
+
+  </div>
+
+  <footer class="footer">
+    © 2026 VoidBerry SMP. Not affiliated with Mojang AB.
+  </footer>
+
+  <script>
+    // Simplified script to handle direct text copying for separate buttons
+    function copySpecificText(textToCopy, btnElement) {
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const originalText = btnElement.innerText;
+        btnElement.innerText = "✔ Copied!";
+        btnElement.classList.add("copied");
+
+        setTimeout(() => {
+          btnElement.innerText = originalText;
+          btnElement.classList.remove("copied");
+        }, 2000);
+      });
+    }
+  </script>
+
+</body>
+</html>
