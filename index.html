@@ -351,6 +351,40 @@
     .alert-box p { color: #fca5a5; font-size: 0.95rem; margin-bottom: 10px; }
     .alert-box p:last-child { margin-bottom: 0; }
 
+    /* --- REPORT FORM STYLES --- */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .form-control {
+      padding: 12px 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.5);
+      color: white;
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-control:focus {
+      border-color: var(--void-purple);
+    }
+    .form-control option {
+      background: var(--bg-dark);
+      color: white;
+    }
+    .hidden {
+      display: none !important;
+    }
+
     /* --- FOOTER --- */
     .footer {
       text-align: center;
@@ -460,7 +494,93 @@
           <em>Note: Outside of towns, you are free to do PvP, raid bases, fight, and kill. However, inside towns, zero tolerance will be enforced.</em>
         </p>
       </div>
+    </section>
 
+    <section id="report-section">
+      <h2 class="section-title">🚨 Report Center</h2>
+      <p style="color: var(--text-muted); margin-bottom: 20px;">You can report a player, staff member, or a glitch here. All reports are confidential and go directly to server administration.</p>
+      
+      <div class="card">
+        <form id="secureReportForm">
+          
+          <div class="grid-2">
+            <div class="form-group">
+              <label>Your In-Game Name *</label>
+              <input type="text" id="reporterIgn" class="form-control" placeholder="E.g. Notch" required>
+            </div>
+            
+            <div class="form-group">
+              <label>Type of Report *</label>
+              <select id="reportType" class="form-control" required>
+                <option value="" disabled selected>Select an option...</option>
+                <option value="Reporting a Player">Reporting a Player</option>
+                <option value="Reporting A Staff">Reporting A Staff</option>
+                <option value="Reporting A Glitch">Reporting A Glitch</option>
+                <option value="Reporting something else">Reporting something else</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="playerSection" class="hidden">
+            <div class="grid-2">
+              <div class="form-group">
+                <label>Player Getting Reported *</label>
+                <input type="text" id="targetPlayer" class="form-control" placeholder="Target's IGN">
+              </div>
+              <div class="form-group">
+                <label>Reason *</label>
+                <select id="playerReason" class="form-control">
+                  <option value="" disabled selected>Select reason...</option>
+                  <option value="Player was using hacks">Player was using hacks</option>
+                  <option value="Player was using exploits">Player was using exploits</option>
+                  <option value="Player was using glitches">Player was using glitches</option>
+                  <option value="Player is Griefing">Player is Griefing</option>
+                  <option value="Player is breaking rules">Player is breaking rules</option>
+                  <option value="Something else">Something else</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div id="staffSection" class="hidden">
+            <div class="grid-2">
+              <div class="form-group">
+                <label>Staff Member Name *</label>
+                <input type="text" id="targetStaff" class="form-control" placeholder="Staff IGN">
+              </div>
+              <div class="form-group">
+                <label>Reason *</label>
+                <select id="staffReason" class="form-control">
+                  <option value="" disabled selected>Select reason...</option>
+                  <option value="Power abusing">Power abusing</option>
+                  <option value="Not listening to my problem">Not listening to my problem</option>
+                  <option value="Using creative mode">Using creative mode</option>
+                  <option value="Using OP powers for own use">Using OP powers for own use</option>
+                  <option value="Giving threats">Giving threats</option>
+                  <option value="Unprofessional behaviour">Unprofessional behaviour</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Evidence Link (Photo/Video)</label>
+            <input type="url" id="evidenceLink" class="form-control" placeholder="Paste Imgur, YouTube, or Drive link here...">
+          </div>
+
+          <div class="form-group">
+            <label>Written Description *</label>
+            <textarea id="reportDescription" class="form-control" rows="4" placeholder="Explain what happened in detail..." required></textarea>
+          </div>
+
+          <button type="submit" id="submitReportBtn" class="copy-btn" style="background: var(--danger-red); margin-top: 10px;">
+            Submit Report Securely
+          </button>
+
+          <p id="reportStatus" style="text-align: center; margin-top: 15px; font-weight: 600;"></p>
+        </form>
+      </div>
     </section>
 
   </div>
@@ -470,7 +590,7 @@
   </footer>
 
   <script>
-    // Simplified script to handle direct text copying for separate buttons
+    // Copy IP Script
     function copySpecificText(textToCopy, btnElement) {
       navigator.clipboard.writeText(textToCopy).then(() => {
         const originalText = btnElement.innerText;
@@ -483,6 +603,88 @@
         }, 2000);
       });
     }
+
+    // Dynamic Form Logic
+    const reportType = document.getElementById('reportType');
+    const playerSection = document.getElementById('playerSection');
+    const staffSection = document.getElementById('staffSection');
+
+    reportType.addEventListener('change', function() {
+      // Hide all dynamic sections first
+      playerSection.classList.add('hidden');
+      staffSection.classList.add('hidden');
+
+      // Show based on selection
+      if (this.value === 'Reporting a Player') {
+        playerSection.classList.remove('hidden');
+      } else if (this.value === 'Reporting A Staff') {
+        staffSection.classList.remove('hidden');
+      }
+    });
+
+    // Form Submit Logic
+    document.getElementById('secureReportForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const btn = document.getElementById('submitReportBtn');
+      const status = document.getElementById('reportStatus');
+      
+      // >>> PASTE YOUR GOOGLE SCRIPT URL HERE <<<
+      const googleWebAppUrl = "PASTE_YOUR_GOOGLE_WEB_APP_URL_HERE"; 
+
+      if (googleWebAppUrl === "PASTE_YOUR_GOOGLE_WEB_APP_URL_HERE") {
+        status.innerText = "❌ Form is not connected to a backend yet.";
+        status.style.color = "var(--danger-red)";
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerText = "Sending Securely...";
+
+      // Gather Data
+      let targetName = "";
+      let specificReason = "";
+      const typeVal = reportType.value;
+
+      if (typeVal === "Reporting a Player") {
+        targetName = document.getElementById('targetPlayer').value;
+        specificReason = document.getElementById('playerReason').value;
+      } else if (typeVal === "Reporting A Staff") {
+        targetName = document.getElementById('targetStaff').value;
+        specificReason = document.getElementById('staffReason').value;
+      }
+
+      const payload = {
+        reporter: document.getElementById('reporterIgn').value,
+        type: typeVal,
+        target: targetName,
+        reason: specificReason,
+        link: document.getElementById('evidenceLink').value,
+        desc: document.getElementById('reportDescription').value
+      };
+
+      fetch(googleWebAppUrl, {
+        method: "POST",
+        mode: "no-cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      }).then(() => {
+        status.innerText = "✅ Report sent successfully! Staff will review it.";
+        status.style.color = "var(--mc-green)";
+        document.getElementById('secureReportForm').reset();
+        playerSection.classList.add('hidden');
+        staffSection.classList.add('hidden');
+      }).catch((error) => {
+        status.innerText = "❌ Connection failed. Please try again later.";
+        status.style.color = "var(--danger-red)";
+      }).finally(() => {
+        btn.disabled = false;
+        btn.innerText = "Submit Report Securely";
+      });
+    });
   </script>
 
 </body>
