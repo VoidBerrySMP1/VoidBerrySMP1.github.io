@@ -1,5 +1,5 @@
 exports.handler = async function(event, context) {
-  const API_URL = "https://api.mcsrvstat.us/2/cross-movies.gl.joinmc.link";
+  const API_URL = "https://api.mcsrvstat.us/2/cross-movies.gl.at.ply.gg:20991";
 
   try {
     const response = await fetch(API_URL);
